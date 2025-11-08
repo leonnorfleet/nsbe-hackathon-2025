@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>New Business Partnership</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Trebuchet MS", sans-serif;
+        --page-bg: #0f172a;
+        --page-bg-secondary: #1d4ed8;
+        --card-bg: #ffffff;
+        --surface: #f8fafc;
+        --outline: rgba(15, 23, 42, 0.12);
+        --brand: #2563eb;
+        --brand-soft: rgba(37, 99, 235, 0.12);
+        --brand-strong: #1d4ed8;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --danger: #dc2626;
+        --danger-soft: rgba(220, 38, 38, 0.1);
+        --warning: #b45309;
+        --success: #15803d;
+        --shadow-strong: 0 30px 80px rgba(15, 23, 42, 0.28);
+        --shadow-soft: 0 10px 25px rgba(24, 35, 64, 0.18);
+        --radius-lg: 24px;
+        --radius-md: 16px;
+        --radius-sm: 10px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: clamp(2rem, 5vw, 3.5rem) clamp(1rem, 4vw, 2.5rem);
+        background: linear-gradient(135deg, var(--page-bg) 0%, var(--page-bg-secondary) 45%, #38bdf8 100%);
+      }
+
+      .shell {
+        width: min(1080px, 100%);
+      }
+
+      header.hero {
+        color: #f8fafc;
+        padding-bottom: clamp(1.5rem, 4vw, 2rem);
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        padding: 0.45rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.35);
+        backdrop-filter: blur(12px);
+        width: fit-content;
+      }
+
+      .hero-eyebrow::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #38f1a5;
+        box-shadow: 0 0 0 3px rgba(56, 241, 165, 0.35);
+      }
+
+      .hero h1 {
+        font-size: clamp(2.2rem, 5vw, 3.1rem);
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        margin: 0;
+        font-weight: 700;
+      }
+
+      .hero p {
+        margin: 0;
+        max-width: 620px;
+        font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+        line-height: 1.6;
+        color: rgba(248, 250, 252, 0.82);
+      }
+
+      .card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        padding: clamp(2rem, 5vw, 2.75rem);
+        box-shadow: var(--shadow-strong);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+      }
+
+      .section-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 2.2rem;
+        align-items: center;
+      }
+
+      .section-header h2 {
+        margin: 0;
+        font-size: clamp(1.5rem, 3vw, 1.9rem);
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .section-header p {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 1rem;
+      }
+
+      .flash {
+        padding: 1rem 1.1rem;
+        border-radius: var(--radius-md);
+        font-weight: 550;
+        margin-bottom: 1.8rem;
+      }
+
+      .flash.error {
+        background: var(--danger-soft);
+        color: var(--danger);
+        border: 1px solid rgba(220, 38, 38, 0.3);
+      }
+
+      .flash.success {
+        background: rgba(22, 163, 74, 0.12);
+        color: var(--success);
+        border: 1px solid rgba(22, 163, 74, 0.35);
+      }
+
+      form {
+        display: grid;
+        gap: 1.75rem;
+      }
+
+      .form-section {
+        border-radius: var(--radius-md);
+        border: 1px solid var(--outline);
+        background: var(--surface);
+        padding: clamp(1.6rem, 4vw, 2rem);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .form-section h3 {
+        margin: 0 0 1.25rem 0;
+        font-size: 1.1rem;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        font-weight: 650;
+        letter-spacing: 0.01em;
+      }
+
+      .form-section h3::before {
+        content: "";
+        display: inline-flex;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--brand);
+        box-shadow: 0 0 0 4px var(--brand-soft);
+      }
+
+      .grid {
+        display: grid;
+        gap: clamp(1.1rem, 3vw, 1.4rem);
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+      }
+
+      label {
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 0.01em;
+        color: var(--text-primary);
+      }
+
+      label span {
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+
+      input,
+      textarea,
+      select {
+        border-radius: var(--radius-sm);
+        border: 1px solid rgba(15, 23, 42, 0.16);
+        padding: 0.85rem 1rem;
+        font: inherit;
+        transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.15s ease;
+        background: #fff;
+      }
+
+      input:focus,
+      textarea:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--brand);
+        box-shadow: 0 0 0 4px var(--brand-soft);
+      }
+
+      textarea {
+        min-height: 110px;
+        resize: vertical;
+      }
+
+      .field-error {
+        color: var(--danger);
+        font-size: 0.85rem;
+        font-weight: 550;
+      }
+
+      .field-warning {
+        color: var(--warning);
+        font-size: 0.85rem;
+        font-weight: 550;
+        display: none;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: center;
+        margin-top: 1rem;
+      }
+
+      .actions small {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      button {
+        padding: 0.85rem 1.85rem;
+        border-radius: var(--radius-sm);
+        border: none;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.18s ease, box-shadow 0.2s ease, background 0.2s ease;
+      }
+
+      button[type="submit"] {
+        background: var(--brand);
+        color: #fff;
+        box-shadow: 0 18px 38px rgba(37, 99, 235, 0.25);
+      }
+
+      button[type="submit"]:hover {
+        transform: translateY(-1px);
+        background: var(--brand-strong);
+        box-shadow: 0 20px 45px rgba(37, 99, 235, 0.3);
+      }
+
+      button[type="reset"] {
+        background: rgba(15, 23, 42, 0.08);
+        color: var(--text-primary);
+      }
+
+      @media (max-width: 720px) {
+        .card {
+          padding: clamp(1.6rem, 5vw, 2.1rem);
+        }
+
+        .form-section {
+          padding: clamp(1.4rem, 4vw, 1.8rem);
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .button-group {
+          justify-content: flex-end;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header class="hero" aria-labelledby="form-title">
+        <h1 id="form-title">Food Access Partner Intake</h1>
+        <p>
+          Help us keep the Los Angeles food support map up to date by sharing information about a new organization or business providing food security services.
+        </p>
+      </header>
+
+      <main class="card" role="main">
+        <div class="section-header"></div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form method="post" action="{{ url_for('add_business') }}" novalidate>
+          {{ form.hidden_tag() }}
+
+          <section class="form-section" aria-labelledby="org-section-title">
+            <h3 id="org-section-title">Organization Details</h3>
+            <div class="grid">
+              <div class="field">
+                <label for="name">Business Name *</label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  value="{{ form.name.data or '' }}"
+                  placeholder="e.g., Community Food Pantry"
+                  autocomplete="organization"
+                />
+                {% if form.name.errors %}
+                  <div class="field-error">{{ form.name.errors[0] }}</div>
+                {% endif %}
+              </div>
+
+              <div class="field">
+                <label for="resource_type">Resource Type *</label>
+                <select id="resource_type" name="resource_type" required>
+                  {% for value, label in form.resource_type.choices %}
+                    <option value="{{ value }}" {% if form.resource_type.data == value %}selected{% endif %}>
+                      {{ label }}
+                    </option>
+                  {% endfor %}
+                </select>
+                {% if form.resource_type.errors %}
+                  <div class="field-error">{{ form.resource_type.errors[0] }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section" aria-labelledby="address-section-title">
+            <h3 id="address-section-title">Location Details</h3>
+            <div class="grid">
+              <div class="field" style="grid-column: 1 / -1;">
+                <label for="address">Street Address *</label>
+                <textarea
+                  id="address"
+                  name="address"
+                  rows="2"
+                  required
+                  placeholder="123 Main St, Los Angeles, CA 90000"
+                  autocomplete="street-address"
+                >{{ form.address.data or '' }}</textarea>
+                <div id="addressWarning" class="field-warning"></div>
+                {% if form.address.errors %}
+                  <div class="field-error">{{ form.address.errors[0] }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section" aria-labelledby="contact-section-title">
+            <h3 id="contact-section-title">Contact Information</h3>
+            <div class="grid">
+              <div class="field">
+                <label for="phone">Phone <span>(optional)</span></label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="text"
+                  value="{{ form.phone.data or '' }}"
+                  placeholder="(123) 456-7890"
+                  autocomplete="tel"
+                />
+                {% if form.phone.errors %}
+                  <div class="field-error">{{ form.phone.errors[0] }}</div>
+                {% endif %}
+              </div>
+
+              <div class="field">
+                <label for="website">Website <span>(optional)</span></label>
+                <input
+                  id="website"
+                  name="website"
+                  type="url"
+                  value="{{ form.website.data or '' }}"
+                  placeholder="https://example.org"
+                  autocomplete="url"
+                />
+                {% if form.website.errors %}
+                  <div class="field-error">{{ form.website.errors[0] }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section" aria-labelledby="hours-section-title">
+            <h3 id="hours-section-title">Service Hours</h3>
+            <div class="grid">
+              <div class="field">
+                <label for="hours">Operating Hours *</label>
+                <select id="hours" name="hours" required>
+                  {% for value, label in form.hours.choices %}
+                    <option value="{{ value }}" {% if form.hours.data == value %}selected{% endif %}>
+                      {{ label }}
+                    </option>
+                  {% endfor %}
+                </select>
+                {% if form.hours.errors %}
+                  <div class="field-error">{{ form.hours.errors[0] }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </section>
+
+          <div class="actions">
+            <small>* Required fields. Location, Google Maps link, and zone will be generated automatically.</small>
+            <div class="button-group">
+              <button type="reset">Clear</button>
+              <button type="submit">Submit Resource</button>
+            </div>
+          </div>
+        </form>
+      </main>
+    </div>
+    <script>
+      (function () {
+        const addressField = document.getElementById('address');
+        const warningEl = document.getElementById('addressWarning');
+        if (!addressField || !warningEl) return;
+
+        const addressPattern = /^\d+\s+[^\n,]+,\s*[A-Za-z\s]+,\s*[A-Z]{2}\s*\d{5}(?:-\d{4})?$/;
+        const message = 'Address must include street number, street name, city, state abbreviation, and ZIP code.';
+
+        const toggleWarning = () => {
+          const value = addressField.value.trim();
+          const isValid = addressPattern.test(value);
+          if (value && !isValid) {
+            warningEl.textContent = message;
+            warningEl.style.display = 'block';
+          } else {
+            warningEl.textContent = '';
+            warningEl.style.display = 'none';
+          }
+        };
+
+        addressField.addEventListener('input', toggleWarning);
+        window.addEventListener('load', toggleWarning);
+      })();
+    </script>
+  </body>
+</html>
+
