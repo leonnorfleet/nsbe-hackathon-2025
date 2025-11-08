@@ -39,8 +39,8 @@ function CustomMarker({data}) {
       title={'Placeholder Title'}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => setClicked(!clicked)}
-      className={`real-estate-marker ${clicked && 'clicked'} ${hovered && 'hovered'}`}>
+      className={classNames('real-estate-marker', { clicked, hovered })}
+      onClick={() => setClicked(!clicked)}>
       {renderCustomPin(data)}
     </AdvancedMarker>
     
