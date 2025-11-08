@@ -1,35 +1,53 @@
-import { useState, useEffect } from 'react'
-import { createRoot } from 'react-dom/client'
-import { APIProvider, InfoWindow, Map, Marker, Pin } from '@vis.gl/react-google-maps';
-
-import resourceData from '../../backend/la_food_resources.json'
-import CustomMarker from './components/customMarker';
+import { BrowserRouter, Routes, Route, NavLink, Link } from 'react-router-dom'
+import HomePage from './pages/HomePage.jsx'
+import IndividualsPage from './pages/IndividualsPage.jsx'
+import BusinessesPage from './pages/BusinessPage.jsx'
+import './App.css'
 
 function App() {
-
   return (
-    <>
-      <APIProvider apiKey={import.meta.env.VITE_MAPS_API_KEY || "AIzaSyAzPbSFnZhayxl_Lf5aYUskwbBnh4XF-N0"}>
-        <Map
-          mapId={'a3bf7de3b28f02d353f73623'}
-          style={{ width: '100vw', height: '100vh' }}
-          defaultCenter={{ lat: 33.969193238451794, lng: -118.41889905728547 }}
-          defaultZoom={13}
-          gestureHandling='greedy'
-          disableDefaultUI
-        />
+    <BrowserRouter>
+      <div className="app-shell">
+        <header className="site-header" role="banner">
+          <div className="header-inner">
+            <Link to="/" className="brand">
+              FeedLA
+            </Link>
+            <nav className="site-nav" aria-label="Primary navigation">
+              <NavLink to="/" end className="nav-link">
+                Home
+              </NavLink>
+              <NavLink to="/individuals" className="nav-link">
+                Individuals
+              </NavLink>
+              <NavLink to="/businesses" className="nav-link">
+                Businesses
+              </NavLink>
+            </nav>
+          </div>
+        </header>
 
-        <Marker
-          position={{ lat: 33.969193238451794, lng: -118.41889905728547 }}
-          clickable={true}
-          onClick={() => alert('click')}
-          title={'clickable google.maps.Marker'}
-        />
+        <main className="site-main" role="main">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/individuals" element={<IndividualsPage />} />
+            <Route path="/businesses" element={<BusinessesPage />} />
+          </Routes>
+        </main>
 
-        {resourceData && <CustomMarker data={resourceData[0]}/>}
-
-      </APIProvider>
-    </>
+        <footer className="site-footer" role="contentinfo">
+          <div className="footer-inner">
+            <span>© {new Date().getFullYear()} FeedLA | Connecting surplus food to communities in need.</span>
+            <div className="footer-links">
+              <a href="https://github.com/leonnorfleet/nsbe-hackathon-2025" target="_blank" rel="noreferrer">
+                View on GitHub
+              </a>
+              <a href="mailto:hello@foodlinkla.org">Contact</a>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </BrowserRouter>
   )
 }
 
