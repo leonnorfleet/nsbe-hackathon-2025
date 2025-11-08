@@ -18,7 +18,7 @@ function ListingDetails({data}) {
                         {data.zone /*icon */}
                     </div>
                     <div className="detail_item">
-                        {data.type /*format this*/ /*icon */}
+                        {data.type.split('_').map(word => word[0].toUpperCase() + word.slice(1)).join(' ')  /*icon */}
                     </div>
                 </div>
 
