@@ -1,0 +1,304 @@
+.form-page {
+    color-scheme: light;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Trebuchet MS", sans-serif;
+    --page-bg: #0f172a;
+    --page-bg-secondary: #1d4ed8;
+    --card-bg: #ffffff;
+    --surface: #f8fafc;
+    --outline: rgba(15, 23, 42, 0.12);
+    --brand: #2563eb;
+    --brand-soft: rgba(37, 99, 235, 0.12);
+    --brand-strong: #1d4ed8;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --danger: #dc2626;
+    --danger-soft: rgba(220, 38, 38, 0.1);
+    --warning: #b45309;
+    --success: #15803d;
+    --shadow-strong: 0 30px 80px rgba(15, 23, 42, 0.28);
+    --shadow-soft: 0 10px 25px rgba(24, 35, 64, 0.18);
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    
+}
+
+.form-page * {
+    box-sizing: border-box;
+}
+
+.form-page body {
+    margin: 0;
+}
+
+.form-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: clamp(2rem, 5vw, 3.5rem) clamp(1rem, 4vw, 2.5rem);
+    background: linear-gradient(135deg, var(--page-bg) 0%, var(--page-bg-secondary) 45%, #38bdf8 100%);
+}
+
+.form-page .shell {
+    width: min(1080px, 100%);
+}
+
+.form-page header.hero {
+    color: #f8fafc;
+    padding-bottom: clamp(1.5rem, 4vw, 2rem);
+    display: grid;
+    gap: 1.25rem;
+}
+
+.form-page .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.35);
+    backdrop-filter: blur(12px);
+    width: fit-content;
+}
+
+.form-page .hero-eyebrow::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #38f1a5;
+    box-shadow: 0 0 0 3px rgba(56, 241, 165, 0.35);
+}
+
+.form-page .hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.1rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin: 0;
+    font-weight: 700;
+}
+
+.form-page .hero p {
+    margin: 0;
+    max-width: 620px;
+    font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+    line-height: 1.6;
+    color: rgba(248, 250, 252, 0.82);
+}
+
+.form-page .card {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: clamp(2rem, 5vw, 2.75rem);
+    box-shadow: var(--shadow-strong);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.form-page .section-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2.2rem;
+    align-items: center;
+}
+
+.form-page .section-header h2 {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.form-page .section-header p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.form-page .flash {
+    padding: 1rem 1.1rem;
+    border-radius: var(--radius-md);
+    font-weight: 550;
+    margin-bottom: 1.8rem;
+}
+
+.form-page .flash.error {
+    background: var(--danger-soft);
+    color: var(--danger);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.form-page .flash.success {
+    background: rgba(22, 163, 74, 0.12);
+    color: var(--success);
+    border: 1px solid rgba(22, 163, 74, 0.35);
+}
+
+.form-page form {
+    display: grid;
+    gap: 1.75rem;
+}
+
+.form-page .form-section {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--outline);
+    background: var(--surface);
+    padding: clamp(1.6rem, 4vw, 2rem);
+    box-shadow: var(--shadow-soft);
+}
+
+.form-page .form-section h3 {
+    margin: 0 0 1.25rem 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+}
+
+.form-page .form-section h3::before {
+    content: "";
+    display: inline-flex;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--brand);
+    box-shadow: 0 0 0 4px var(--brand-soft);
+}
+
+.form-page .grid {
+    display: grid;
+    gap: clamp(1.1rem, 3vw, 1.4rem);
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.form-page .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.form-page label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+    color: var(--text-primary);
+}
+
+.form-page label span {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.form-page input,
+.form-page textarea,
+.form-page select {
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(15, 23, 42, 0.16);
+    padding: 0.85rem 1rem;
+    font: inherit;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.15s ease;
+    background: #fff;
+}
+
+.form-page input:focus,
+.form-page textarea:focus,
+.form-page select:focus {
+    outline: none;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 4px var(--brand-soft);
+}
+
+.form-page textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.form-page .field-error {
+    color: var(--danger);
+    font-size: 0.85rem;
+    font-weight: 550;
+}
+
+.form-page .field-warning {
+    color: var(--warning);
+    font-size: 0.85rem;
+    font-weight: 550;
+    display: none;
+}
+
+.form-page .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.form-page .actions small {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.form-page .button-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.form-page button {
+    padding: 0.85rem 1.85rem;
+    border-radius: var(--radius-sm);
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.form-page button[type="submit"] {
+    background: var(--brand);
+    color: #fff;
+    box-shadow: 0 18px 38px rgba(37, 99, 235, 0.25);
+}
+
+.form-page button[type="submit"]:hover {
+    transform: translateY(-1px);
+    background: var(--brand-strong);
+    box-shadow: 0 20px 45px rgba(37, 99, 235, 0.3);
+}
+
+.form-page button[type="reset"] {
+    background: rgba(15, 23, 42, 0.08);
+    color: var(--text-primary);
+}
+
+@media (max-width: 720px) {
+    .form-page .card {
+        padding: clamp(1.6rem, 5vw, 2.1rem);
+    }
+
+    .form-page .form-section {
+        padding: clamp(1.4rem, 4vw, 1.8rem);
+    }
+
+    .form-page .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-page .actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-page .button-group {
+        justify-content: flex-end;
+    }
+}

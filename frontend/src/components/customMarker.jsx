@@ -26,14 +26,13 @@ function CustomMarker({ data, isOpen, hide, onClick }) {
                 onClick();
               }}
             >
-              <X/>
             </button>
 
             <ListingDetails data={data} />
           </div>
         )}
+        <div className="tip" />
       </div>
-      <div className="tip" />
     </AdvancedMarker>
   );
 }
