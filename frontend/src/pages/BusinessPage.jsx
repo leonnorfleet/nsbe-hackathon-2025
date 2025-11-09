@@ -53,6 +53,7 @@ const partners = [
 ]
 
 const partnerSlides = [...partners, ...partners]
+const BUSINESS_FORM_URL = import.meta.env.VITE_BUSINESS_FORM_URL || 'http://127.0.0.1:8000/'
 
 function BusinessesPage() {
   return (
@@ -70,7 +71,7 @@ function BusinessesPage() {
           <p>Complete our partnership form and our team will help you launch your first donation.</p>
           <a
             className="btn primary"
-            href="http://127.0.0.1:8000/"
+            href={BUSINESS_FORM_URL}
             target="_blank"
             rel="noreferrer"
           >

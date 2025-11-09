@@ -1,28 +1,14 @@
 import { Link } from 'react-router-dom'
 import { MapPin } from 'lucide-react'
 
-const highlights = [
-  {
-    title: 'Find Nearby Food Support',
-    description:
-      'Browse free groceries, prepared meals, and community fridges across Los Angeles with real-time availability updates.',
-    link: '/individuals',
-    cta: 'Get Support',
-  },
-  {
-    title: 'Share Your Surplus Food',
-    description:
-      'Restaurants, grocers, and caterers can post surplus food for same-day pickup and help reduce waste.',
-    link: '/businesses',
-    cta: 'Partner With Us',
-  },
-]
-
 const impactStats = [
   { label: 'Meals redirected', value: '85K+' },
   { label: 'Community partners', value: '120' },
   { label: 'Neighborhood zones', value: '28' },
 ]
+
+const HERO_IMAGE_URL =
+  import.meta.env.VITE_HOME_HERO_IMAGE || '/images/feedla-hero.jpg'
 
 function HomePage() {
   return (
@@ -55,6 +41,13 @@ function HomePage() {
               Become a partner
             </Link>
           </div>
+        </div>
+        <div className="hero-media">
+          <img
+            src={HERO_IMAGE_URL}
+            alt="Boxes of fresh produce set out in front of the Los Angeles skyline at sunset"
+            loading="lazy"
+          />
         </div>
         <div className="hero-card">
           <h2>Impact snapshot</h2>
