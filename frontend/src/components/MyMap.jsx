@@ -5,7 +5,7 @@ import { APIProvider, InfoWindow, Map, Marker, Pin } from '@vis.gl/react-google-
 import resourceData from '../../../backend/la_food_resources.json'
 import CustomMarker from './CustomMarker'
 
-function MyMap() {
+function MyMap({resourceData}) {
     const [openMarkerId, setOpenMarkerId] = useState(null);
     const handleMapClick = () => setOpenMarkerId(null); // close all bubbles
 
@@ -21,7 +21,7 @@ function MyMap() {
             <Map
               mapId={'a3bf7de3b28f02d353f73623'}
               style={{ width: '100vw', height: '100vh' }}
-              defaultCenter={{ lat: 33.969193238451794, lng: -118.41889905728547 }}
+              defaultCenter={{ lat: 34.0557, lng: -118.2488 }}
               defaultZoom={13}
               gestureHandling='greedy'
               disableDefaultUI

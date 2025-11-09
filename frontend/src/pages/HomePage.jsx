@@ -8,7 +8,7 @@ const impactStats = [
 ]
 
 const HERO_IMAGE_URL =
-  import.meta.env.VITE_HOME_HERO_IMAGE || '/images/feedla-hero.jpg'
+  import.meta.env.VITE_HOME_HERO_IMAGE || '/images/LA_Food_Skyline.jpg'
 
 function HomePage() {
   return (
@@ -170,8 +170,36 @@ function HomePage() {
           box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
         }
 
+        .hero-with-bg {
+          position: relative;
+          border-radius: 1.75rem;
+          overflow: hidden;
+          padding: clamp(2.5rem, 5vw, 3.5rem);
+          box-shadow: 0 30px 60px rgba(17, 24, 39, 0.22);
+        }
+
+        .hero-with-bg::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, rgba(249, 115, 22, 0.18), rgba(34, 197, 94, 0.18));
+        }
+
+        .hero-with-bg > * {
+          position: relative;
+          z-index: 1;
+        }
+
+        .hero-with-bg .hero-content h1 {
+          color: #ffffff;
+        }
+
+        .hero-with-bg .hero-content .hero-copy {
+          color: rgba(255, 255, 255, 0.92);
+        }
+
         .hero-card {
-          background: white;
+          background: rgba(255, 255, 255, 0.92);
           border: 2px solid #fed7aa;
           border-radius: 1.5rem;
           box-shadow: 0 20px 40px rgba(249, 115, 22, 0.15);

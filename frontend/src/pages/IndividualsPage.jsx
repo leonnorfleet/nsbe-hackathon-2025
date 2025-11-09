@@ -4,6 +4,7 @@ import { APIProvider, Map, useMap } from '@vis.gl/react-google-maps'
 import { MarkerClusterer } from '@googlemaps/markerclusterer'
 import PropTypes from 'prop-types'
 import MyMap from '../components/MyMap'
+import resourceData from '../../../backend/la_food_resources.json'
 
 const DEFAULT_CENTER = { lat: 34.0522, lng: -118.2437 }
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'
@@ -147,35 +148,10 @@ function IndividualsPage() {
   const [mapZoom, setMapZoom] = useState(12)
   const geocoderRef = useRef(null)
 
-  useEffect(() => {
-    async function fetchResources() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/resources`)
-        if (!response.ok) throw new Error('Unable to load resources')
-
-        const data = await response.json()
-        const combined = [
-          ...(Array.isArray(data.static) ? data.static : []),
-          ...(Array.isArray(data.dynamic) ? data.dynamic : []),
-        ]
-          .filter((r) => Number.isFinite(r.lat) && Number.isFinite(r.lng))
-          .map((r) => ({
-            ...r,
-            category: categorizeResource(r),
-          }))
-
-        setResources(combined)
-        setFilteredResources([])
-      } catch (err) {
-        console.error(err)
-        setError('Unable to load resources right now. Please try again soon.')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchResources()
-  }, [])
+//   useEffect(() => {
+//     setResources(resourceData);
+//     setFilteredResources(resourceData);
+//   }, [])
 
   useEffect(() => {
     if (!navigator.geolocation) return
@@ -208,47 +184,6 @@ function IndividualsPage() {
     [resources]
   )
 
-  const handleChatSearch = ({ category, raw }) => {
-    if (!resources.length) return
-
-    if (category) {
-      const matches = resources.filter((r) => r.category === category)
-      updateResults(matches, { zoom: 13 })
-    } else {
-      const matches = fuse.search(raw).map((m) => m.item)
-      if (matches.length === 0) {
-        alert(`No resources found for "${raw}". Try another term or a category like “meals”.`)
-        return
-      }
-      updateResults(matches, { zoom: 13 })
-    }
-  }
-
-  const handleTextSearch = (event) => {
-    const term = event.target.value
-    if (!term.trim()) {
-      setFilteredResources([])
-      setMapCenter(userLocation)
-      setMapZoom(12)
-      return
-    }
-
-    const matches = fuse.search(term).map((m) => m.item)
-    if (matches.length > 0) {
-      updateResults(matches, { zoom: 13 })
-    } else {
-      geocodeAndCenter(term)
-      setFilteredResources([])
-    }
-  }
-
-  const updateResults = (items, options = {}) => {
-    if (!items.length) {
-      setFilteredResources([])
-      setMapCenter(userLocation)
-      setMapZoom(12)
-      return
-    }
 
     const sorted = items
       .map((item) => ({
@@ -261,27 +196,6 @@ function IndividualsPage() {
     const focusLocation = sorted[0] ? { lat: sorted[0].lat, lng: sorted[0].lng } : userLocation
     setMapCenter(focusLocation)
     setMapZoom(options.zoom ?? 13)
-  }
-
-  const geocodeAndCenter = (address) => {
-    if (!geocoderRef.current && globalThis.google) {
-      geocoderRef.current = new globalThis.google.maps.Geocoder()
-    }
-    const geocoder = geocoderRef.current
-    if (!geocoder) return
-
-    geocoder.geocode({ address, componentRestrictions: { country: 'US' } }, (results, status) => {
-      const location = results?.[0]?.geometry?.location
-      if (status === 'OK' && location) {
-        const lat = typeof location.lat === 'function' ? location.lat() : location.lat
-        const lng = typeof location.lng === 'function' ? location.lng() : location.lng
-        if (Number.isFinite(lat) && Number.isFinite(lng)) {
-          setMapCenter({ lat, lng })
-          setMapZoom(13)
-        }
-      }
-    })
-  }
 
   return (
     <div className="page individuals-page themed-surface">
@@ -306,24 +220,13 @@ function IndividualsPage() {
             >
               <ClusteredMarkers locations={filteredResources} mapCenter={mapCenter} mapZoom={mapZoom} />
             </Map> */}
-            <MyMap/>
+            <MyMap resourceData={resourceData}/>
           </APIProvider>
         </section>
 
         <aside className="map-sidebar">
           <h2>Food Finder Chat</h2>
           <ChatBot onSearch={handleChatSearch} />
-
-          <h2>Search manually</h2>
-          <input
-            type="text"
-            placeholder="Search by name, address, or zone"
-            onChange={handleTextSearch}
-            className="search-input"
-          />
-
-          {loading && <p className="placeholder">Loading resources…</p>}
-          {error && <p className="placeholder error">{error}</p>}
 
           {!loading && !error && filteredResources.length > 0 ? (
             <div className="results">
