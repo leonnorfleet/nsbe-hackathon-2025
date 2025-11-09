@@ -15,6 +15,7 @@ from geopy.exc import GeocoderServiceError, GeocoderTimedOut
 from geopy.geocoders import Nominatim
 from wtforms import SelectField, StringField, TextAreaField
 from wtforms.validators import DataRequired, Length, Optional, URL, ValidationError
+
 DEFAULT_RESOURCE_TYPES = [
     ("", "Select a resource type"),
     ("food_bank", "Food Bank"),

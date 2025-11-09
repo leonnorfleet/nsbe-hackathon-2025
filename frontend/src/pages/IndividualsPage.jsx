@@ -3,6 +3,7 @@ import Fuse from 'fuse.js'
 import { APIProvider, Map, useMap } from '@vis.gl/react-google-maps'
 import { MarkerClusterer } from '@googlemaps/markerclusterer'
 import PropTypes from 'prop-types'
+import MyMap from '../components/MyMap'
 
 const DEFAULT_CENTER = { lat: 34.0522, lng: -118.2437 }
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'
@@ -295,7 +296,8 @@ function IndividualsPage() {
       <section className="map-section">
         <section className="map-wrapper" aria-label="Los Angeles community resources map">
           <APIProvider apiKey={import.meta.env.VITE_MAPS_API_KEY}>
-            <Map
+            {/* <Map
+              mapId={'a3bf7de3b28f02d353f73623'}
               style={{ width: '100%', height: '100%' }}
               defaultCenter={DEFAULT_CENTER}
               defaultZoom={12}
@@ -303,7 +305,8 @@ function IndividualsPage() {
               disableDefaultUI={false}
             >
               <ClusteredMarkers locations={filteredResources} mapCenter={mapCenter} mapZoom={mapZoom} />
-            </Map>
+            </Map> */}
+            <MyMap/>
           </APIProvider>
         </section>
 
