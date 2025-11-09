@@ -29,13 +29,6 @@ function MyMap() {
               
             />
 
-            <Marker
-              position={{ lat: 33.969193238451794, lng: -118.41889905728547 }}
-              clickable={true}
-              onClick={() => alert('click')}
-              title={'clickable google.maps.Marker'}
-            />
-
             {
               resourceData.map((data, i) => (
                 <CustomMarker
