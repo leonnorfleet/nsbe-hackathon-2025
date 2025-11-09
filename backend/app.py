@@ -8,7 +8,8 @@ import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Tuple
 
-from flask import Flask, Response, current_app, flash, redirect, render_template, request, url_for
+from flask import Flask, Response, current_app, flash, jsonify, redirect, render_template, request, url_for
+from flask_cors import CORS
 from flask_wtf import CSRFProtect, FlaskForm
 from geopy.exc import GeocoderServiceError, GeocoderTimedOut
 from geopy.geocoders import Nominatim
@@ -110,6 +111,11 @@ app.config.update(
 )
 
 csrf = CSRFProtect(app)
+CORS(
+    app,
+    resources={r"/api/*": {"origins": os.environ.get("ALLOWED_ORIGINS", "*")}},
+    supports_credentials=False,
+)
 
 _GEOCODER = Nominatim(user_agent="foodlink_resource_form")
 
@@ -266,6 +272,19 @@ def add_business() -> Response | str:
         flash_validation_errors(form)
 
     return render_template(TEMPLATE_ADD_BUSINESS, form=form)
+
+
+@app.route("/api/resources", methods=["GET"])
+def get_resources() -> Response:
+    """Return resource data for the frontend."""
+    resources = load_resources()
+    return jsonify(
+        {
+            "static": resources,
+            "dynamic": [],
+            "total": len(resources),
+        }
+    )
 
 
 if __name__ == "__main__":
