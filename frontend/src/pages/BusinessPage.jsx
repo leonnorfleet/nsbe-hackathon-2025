@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-
 const benefits = [
   {
     title: 'Streamlined pickup scheduling',
@@ -55,7 +54,6 @@ const partners = [
 ]
 
 const partnerSlides = [...partners, ...partners]
-const BUSINESS_FORM_ROUTE = '/form'
 
 function BusinessesPage() {
   return (
@@ -71,10 +69,10 @@ function BusinessesPage() {
         <div className="cta-card">
           <h2>Ready in 5 minutes</h2>
           <p>Complete our partnership form and our team will help you launch your first donation.</p>
-          <Link className="btn primary" to={BUSINESS_FORM_ROUTE}>
+          <Link className="btn primary" to="/form">
             Register your business
           </Link>
-          <span className="cta-footnote">Complete the Food Access Partner form</span>
+          <span className="cta-footnote">Complete the FeedLA intake form</span>
         </div>
       </header>
 
@@ -97,45 +95,15 @@ function BusinessesPage() {
                   <img src={partner.logo} alt="" loading="lazy" />
                 </div>
                 <div className="partner-meta">
-                  <h3>{partner.name}</h3>
+                  <h3>{partner.name}</h3> 
                   <p>{partner.role}</p>
                 </div>
               </article>
             ))}
           </div>
         </section>
-      </section>
-
-      <section className="benefits-section">
-        <div className="section-heading">
-          <h2>Why businesses trust FoodLink LA</h2>
-          <p>We handle logistics so your staff can focus on service and sustainability goals.</p>
-        </div>
-        <div className="benefits-grid">
-          {benefits.map((item) => (
-            <article key={item.title}>
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="contact-section">
-        <div className="contact-card">
-          <h2>Questions before you sign up?</h2>
-          <p>Email <a href="mailto:partners@foodlinkla.org">partners@foodlinkla.org</a> to schedule a 15-minute onboarding call.</p>
-          <div className="contact-actions">
-            <a className="btn ghost" href="mailto:partners@foodlinkla.org">
-              Schedule a call
-            </a>
-            <a className="btn secondary" href="https://drive.google.com" target="_blank" rel="noreferrer">
-              Download safety guidelines
-            </a>
-          </div>
-        </div>
-      </section>
-    </div>
+      </section> 
+    </div>      
   )
 }
 

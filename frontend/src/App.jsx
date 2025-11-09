@@ -3,7 +3,6 @@ import HomePage from './pages/HomePage.jsx'
 import IndividualsPage from './pages/IndividualsPage.jsx'
 import BusinessesPage from './pages/BusinessPage.jsx'
 import FoodAccessForm from './pages/form.jsx'
-import MyMap from './components/MyMap.jsx'
 import './App.css'
 
 function App() {

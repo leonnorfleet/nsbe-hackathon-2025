@@ -3,12 +3,12 @@ import { MapPin } from 'lucide-react'
 
 const impactStats = [
   { label: 'Meals redirected', value: '85K+' },
-  { label: 'Community partners', value: '120' },
+  { label: 'Community partners', value: '320' },
   { label: 'Neighborhood zones', value: '28' },
 ]
 
 const HERO_IMAGE_URL =
-  import.meta.env.VITE_HOME_HERO_IMAGE || '/images/LA_Food_Skyline.jpg'
+  import.meta.env.VITE_HOME_HERO_IMAGE || '/images/LA_Food_Skyline.jpg' 
 
 function HomePage() {
   return (
@@ -27,7 +27,7 @@ function HomePage() {
         <div className="hero-content">
           <p className="eyebrow">Los Angeles Food Security Network</p>
           <h1>
-            Connecting Free Food Resources to Neighbors in Need
+            Connecting surplus food and free food resources to neighbors in need
           </h1>
           <p className="hero-copy">
             FeedLA brings together community organizations, businesses, and individuals to
@@ -65,29 +65,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="how-it-works">
-        <div className="section-heading">
-          <h2>How FeedLA works</h2>
-          <p>We combine trusted data, localized outreach, and rapid logistics to keep extra food moving to the right place.</p>
-        </div>
-        <div className="steps-grid">
-          <div className="step">
-            <span className="step-number">1</span>
-            <h3>Identify resources & surplus</h3>
-            <p>We aggregate public food bank listings and live updates submitted by businesses and volunteers.</p>
-          </div>
-          <div className="step">
-            <span className="step-number">2</span>
-            <h3>Match to local need</h3>
-            <p>Smart routing ensures food reaches neighborhoods with the highest demand within critical pickup windows.</p>
-          </div>
-          <div className="step">
-            <span className="step-number">3</span>
-            <h3>Coordinate pickup & delivery</h3>
-            <p>Volunteers, nonprofits, and city partners receive alerts to mobilize drivers and drop-off sites.</p>
-          </div>
-        </div>
-      </section>
+      
 
       <style>{`
         .logo-header {
