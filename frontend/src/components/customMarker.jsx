@@ -3,7 +3,7 @@ import { AdvancedMarker } from '@vis.gl/react-google-maps'
 import '../styles/custom-advanced-marker.css'
 import ListingDetails from '../assets/listing-details'
 import classNames from 'classnames'
-import { Home, X } from 'lucide-react'
+import iconMap from './icons'
 
 function CustomMarker({ data, isOpen, hide, onClick }) {
   return (
@@ -14,7 +14,7 @@ function CustomMarker({ data, isOpen, hide, onClick }) {
     >
       <div className={classNames('custom-pin', { expanded: isOpen, hidden: hide })}>
         <div className="icon-container">
-          <Home size={24} strokeWidth={2} />
+          {iconMap[data.type]}
         </div>
 
         {isOpen && (

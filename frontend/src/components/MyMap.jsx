@@ -9,6 +9,12 @@ function MyMap() {
     const [openMarkerId, setOpenMarkerId] = useState(null);
     const handleMapClick = () => setOpenMarkerId(null); // close all bubbles
 
+    const mapStyles = [
+      { featureType: "water", elementType: "geometry", stylers: [{ visibility: "on" }, { color: "#aadaff" }] },
+      { featureType: "landscape", elementType: "geometry", stylers: [{ visibility: "on" }, { color: "#f0f0f0" }] }
+    ];
+
+
     return (
         <div className=''>
           <APIProvider apiKey={import.meta.env.VITE_MAPS_API_KEY || "AIzaSyAzPbSFnZhayxl_Lf5aYUskwbBnh4XF-N0"}>
@@ -20,6 +26,7 @@ function MyMap() {
               gestureHandling='greedy'
               disableDefaultUI
               onClick={handleMapClick}
+              
             />
 
             <Marker
