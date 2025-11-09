@@ -7,6 +7,15 @@ import PropTypes from 'prop-types'
 const DEFAULT_CENTER = { lat: 34.0522, lng: -118.2437 }
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'
 
+const KEYWORD_OPTIONS = [
+  { label: 'Groceries', category: 'groceries', raw: 'groceries' },
+  { label: 'Vegetables & Produce', category: 'groceries', raw: 'vegetables' },
+  { label: 'Prepared Meals', category: 'meals', raw: 'prepared meals' },
+  { label: 'Senior Support', category: 'senior', raw: 'senior meals' },
+  { label: 'Baby Food & Family', category: 'baby_food', raw: 'baby food' },
+  { label: 'Community Fridges', category: null, raw: 'community fridge' },
+]
+
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371
   const dLat = ((lat2 - lat1) * Math.PI) / 180
@@ -37,49 +46,20 @@ function ChatBot({ onSearch }) {
   const [messages, setMessages] = useState([
     { id: makeId(), sender: 'bot', text: 'Hi! 👋 What kind of food support are you looking for?' },
   ])
-  const [userInput, setUserInput] = useState('')
 
-  const handleSend = () => {
-    const raw = userInput.trim()
-    if (!raw) return
-
-    const input = raw.toLowerCase()
-    setMessages((prev) => [...prev, { id: makeId(), sender: 'user', text: raw }])
-    setUserInput('')
-
-    const categories = {
-      meals: ['meal', 'kitchen', 'soup', 'lunch', 'dinner'],
-      groceries: ['food', 'pantry', 'produce', 'grocery', 'staples'],
-      senior: ['senior', 'elder', 'wheels'],
-      baby_food: ['baby', 'infant', 'formula', 'family'],
+  const handleSelect = (option) => {
+    const { label, category, raw } = option
+    const userMessage = { id: makeId(), sender: 'user', text: label }
+    const botMessage = {
+      id: makeId(),
+      sender: 'bot',
+      text: category
+        ? `Searching for ${label.toLowerCase()} options near you…`
+        : `Looking for ${label.toLowerCase()} around Los Angeles…`,
     }
 
-    let matched = null
-    Object.entries(categories).some(([category, keywords]) => {
-      if (keywords.some((kw) => input.includes(kw))) {
-        matched = category
-        return true
-      }
-      return false
-    })
-
-    if (matched) {
-      onSearch({ category: matched, raw })
-      setMessages((prev) => [
-        ...prev,
-        { id: makeId(), sender: 'bot', text: `Searching for ${matched.replace('_', ' ')} options near you…` },
-      ])
-    } else {
-      onSearch({ category: null, raw })
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: makeId(),
-          sender: 'bot',
-          text: "I didn't catch that. Try a word like “meals”, “groceries”, “senior”, or “baby”.",
-        },
-      ])
-    }
+    setMessages((prev) => [...prev, userMessage, botMessage])
+    onSearch({ category, raw: raw || label })
   }
 
   return (
@@ -91,21 +71,18 @@ function ChatBot({ onSearch }) {
           </div>
         ))}
       </div>
-      <div className="chat-input">
-        <input
-          type="text"
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          placeholder="Type what you need…"
-          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-        />
-        <button onClick={handleSend}>Send</button>
+      <div className="keyword-grid">
+        {KEYWORD_OPTIONS.map((option) => (
+          <button key={option.label} type="button" onClick={() => handleSelect(option)}>
+            {option.label}
+          </button>
+        ))}
       </div>
     </div>
   )
 }
 
-function ClusteredMarkers({ locations, mapCenter }) {
+function ClusteredMarkers({ locations, mapCenter, mapZoom }) {
   const map = useMap()
   const clustererRef = useRef(null)
   const markersRef = useRef([])
@@ -115,6 +92,9 @@ function ClusteredMarkers({ locations, mapCenter }) {
 
     if (mapCenter) {
       map.setCenter(mapCenter)
+    }
+    if (Number.isFinite(mapZoom)) {
+      map.setZoom(mapZoom)
     }
 
     for (const marker of markersRef.current) {
@@ -126,15 +106,16 @@ function ClusteredMarkers({ locations, mapCenter }) {
       clustererRef.current = null
     }
 
-    const markers = locations
-      .filter((loc) => Number.isFinite(loc.lat) && Number.isFinite(loc.lng))
-      .map((loc) => {
+    const markers = []
+    for (const loc of locations) {
+      if (Number.isFinite(loc.lat) && Number.isFinite(loc.lng)) {
         const marker = new globalThis.google.maps.Marker({
           position: { lat: loc.lat, lng: loc.lng },
           title: loc.name,
         })
-        return marker
-      })
+        markers.push(marker)
+      }
+    }
 
     markersRef.current = markers
 
@@ -143,36 +124,12 @@ function ClusteredMarkers({ locations, mapCenter }) {
     }
 
     return () => {
-      for (const marker of markersRef.current) {
-        marker.setMap(null)
-      }
+      for (const marker of markersRef.current) marker.setMap(null)
       markersRef.current = []
       if (clustererRef.current) {
         clustererRef.current.clearMarkers()
         clustererRef.current = null
       }
-ChatBot.propTypes = {
-  onSearch: PropTypes.func.isRequired,
-}
-
-ClusteredMarkers.propTypes = {
-  locations: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      lat: PropTypes.number,
-      lng: PropTypes.number,
-    })
-  ),
-  mapCenter: PropTypes.shape({
-    lat: PropTypes.number,
-    lng: PropTypes.number,
-  }),
-}
-
-ClusteredMarkers.defaultProps = {
-  locations: [],
-  mapCenter: null,
-}
     }
   }, [map, locations, mapCenter])
 
@@ -186,6 +143,8 @@ function IndividualsPage() {
   const [error, setError] = useState(null)
   const [userLocation, setUserLocation] = useState(DEFAULT_CENTER)
   const [mapCenter, setMapCenter] = useState(DEFAULT_CENTER)
+  const [mapZoom, setMapZoom] = useState(12)
+  const geocoderRef = useRef(null)
 
   useEffect(() => {
     async function fetchResources() {
@@ -205,7 +164,7 @@ function IndividualsPage() {
           }))
 
         setResources(combined)
-        setFilteredResources(combined)
+        setFilteredResources([])
       } catch (err) {
         console.error(err)
         setError('Unable to load resources right now. Please try again soon.')
@@ -233,6 +192,12 @@ function IndividualsPage() {
     )
   }, [])
 
+  useEffect(() => {
+    if (!geocoderRef.current && globalThis.google?.maps?.Geocoder) {
+      geocoderRef.current = new globalThis.google.maps.Geocoder()
+    }
+  }, [filteredResources])
+
   const fuse = useMemo(
     () =>
       new Fuse(resources, {
@@ -247,31 +212,40 @@ function IndividualsPage() {
 
     if (category) {
       const matches = resources.filter((r) => r.category === category)
-      updateResults(matches)
+      updateResults(matches, { zoom: 13 })
     } else {
       const matches = fuse.search(raw).map((m) => m.item)
       if (matches.length === 0) {
         alert(`No resources found for "${raw}". Try another term or a category like “meals”.`)
         return
       }
-      updateResults(matches)
+      updateResults(matches, { zoom: 13 })
     }
   }
 
   const handleTextSearch = (event) => {
     const term = event.target.value
     if (!term.trim()) {
-      setFilteredResources(resources)
+      setFilteredResources([])
+      setMapCenter(userLocation)
+      setMapZoom(12)
       return
     }
 
     const matches = fuse.search(term).map((m) => m.item)
-    updateResults(matches)
+    if (matches.length > 0) {
+      updateResults(matches, { zoom: 13 })
+    } else {
+      geocodeAndCenter(term)
+      setFilteredResources([])
+    }
   }
 
-  const updateResults = (items) => {
+  const updateResults = (items, options = {}) => {
     if (!items.length) {
       setFilteredResources([])
+      setMapCenter(userLocation)
+      setMapZoom(12)
       return
     }
 
@@ -282,8 +256,30 @@ function IndividualsPage() {
       }))
       .sort((a, b) => a.distance - b.distance)
 
-    setFilteredResources(sorted)
-    setMapCenter(sorted[0] ? { lat: sorted[0].lat, lng: sorted[0].lng } : userLocation)
+    setFilteredResources(sorted.slice(0, 20))
+    const focusLocation = sorted[0] ? { lat: sorted[0].lat, lng: sorted[0].lng } : userLocation
+    setMapCenter(focusLocation)
+    setMapZoom(options.zoom ?? 13)
+  }
+
+  const geocodeAndCenter = (address) => {
+    if (!geocoderRef.current && globalThis.google) {
+      geocoderRef.current = new globalThis.google.maps.Geocoder()
+    }
+    const geocoder = geocoderRef.current
+    if (!geocoder) return
+
+    geocoder.geocode({ address, componentRestrictions: { country: 'US' } }, (results, status) => {
+      const location = results?.[0]?.geometry?.location
+      if (status === 'OK' && location) {
+        const lat = typeof location.lat === 'function' ? location.lat() : location.lat
+        const lng = typeof location.lng === 'function' ? location.lng() : location.lng
+        if (Number.isFinite(lat) && Number.isFinite(lng)) {
+          setMapCenter({ lat, lng })
+          setMapZoom(13)
+        }
+      }
+    })
   }
 
   return (
@@ -306,7 +302,7 @@ function IndividualsPage() {
               gestureHandling="greedy"
               disableDefaultUI={false}
             >
-              <ClusteredMarkers locations={filteredResources} mapCenter={mapCenter} />
+              <ClusteredMarkers locations={filteredResources} mapCenter={mapCenter} mapZoom={mapZoom} />
             </Map>
           </APIProvider>
         </section>
@@ -349,6 +345,9 @@ function IndividualsPage() {
               </ul>
             </div>
           ) : null}
+          {!loading && !error && filteredResources.length === 0 && (
+            <p className="placeholder">Start by typing a need or asking the chat for meals, groceries, or baby food.</p>
+          )}
         </aside>
       </section>
     </div>
@@ -356,3 +355,28 @@ function IndividualsPage() {
 }
 
 export default IndividualsPage
+
+ChatBot.propTypes = {
+  onSearch: PropTypes.func.isRequired,
+}
+
+ClusteredMarkers.propTypes = {
+  locations: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      lat: PropTypes.number,
+      lng: PropTypes.number,
+    })
+  ),
+  mapCenter: PropTypes.shape({
+    lat: PropTypes.number,
+    lng: PropTypes.number,
+  }),
+  mapZoom: PropTypes.number,
+}
+
+ClusteredMarkers.defaultProps = {
+  locations: [],
+  mapCenter: null,
+  mapZoom: 12,
+}

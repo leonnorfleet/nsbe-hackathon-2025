@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 const benefits = [
   {
     title: 'Streamlined pickup scheduling',
@@ -53,7 +55,7 @@ const partners = [
 ]
 
 const partnerSlides = [...partners, ...partners]
-const BUSINESS_FORM_URL = import.meta.env.VITE_BUSINESS_FORM_URL || 'http://127.0.0.1:8000/'
+const BUSINESS_FORM_ROUTE = '/form'
 
 function BusinessesPage() {
   return (
@@ -69,15 +71,10 @@ function BusinessesPage() {
         <div className="cta-card">
           <h2>Ready in 5 minutes</h2>
           <p>Complete our partnership form and our team will help you launch your first donation.</p>
-          <a
-            className="btn primary"
-            href={BUSINESS_FORM_URL}
-            target="_blank"
-            rel="noreferrer"
-          >
+          <Link className="btn primary" to={BUSINESS_FORM_ROUTE}>
             Register your business
-          </a>
-          <span className="cta-footnote">Opens secure FoodLink intake form</span>
+          </Link>
+          <span className="cta-footnote">Complete the Food Access Partner form</span>
         </div>
       </header>
 

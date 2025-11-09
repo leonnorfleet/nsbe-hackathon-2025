@@ -27,7 +27,7 @@ function HomePage() {
         <div className="hero-content">
           <p className="eyebrow">Los Angeles Food Security Network</p>
           <h1>
-            Connecting surplus food and free food resources to neighbors in need
+            Connecting Free Food Resources to Neighbors in Need
           </h1>
           <p className="hero-copy">
             FeedLA brings together community organizations, businesses, and individuals to
