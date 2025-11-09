@@ -300,6 +300,7 @@ function IndividualsPage() {
         <section className="map-wrapper" aria-label="Los Angeles community resources map">
           <APIProvider apiKey={import.meta.env.VITE_MAPS_API_KEY}>
             <Map
+              mapId={'a3bf7de3b28f02d353f73623'}
               style={{ width: '100%', height: '100%' }}
               defaultCenter={DEFAULT_CENTER}
               defaultZoom={12}
